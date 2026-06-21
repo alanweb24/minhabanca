@@ -4,22 +4,90 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Minha Banca Premium</title>
+
 <style>
-body{margin:0;background:#08111f;color:#fff;font-family:Arial;padding:15px}
-.container{max-width:520px;margin:auto}
-.card{background:#15233d;border-radius:18px;padding:16px;margin:10px 0}
-h1{text-align:center}
-input{width:100%;padding:12px;font-size:18px;border-radius:10px;border:none;box-sizing:border-box}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{padding:12px;border-radius:12px;font-weight:bold}
-.blue{background:#1d4ed8}.green{background:#15803d}.red{background:#b91c1c}
-button{width:100%;padding:14px;border:none;border-radius:12px;color:#fff;font-size:18px;font-weight:bold}
-table{width:100%;font-size:12px}
-td{padding:4px}
+body{
+margin:0;
+background:#08111f;
+color:#fff;
+font-family:Arial;
+padding:15px
+}
+
+.container{
+max-width:520px;
+margin:auto
+}
+
+.card{
+background:#15233d;
+border-radius:18px;
+padding:16px;
+margin:10px 0
+}
+
+h1{
+text-align:center
+}
+
+input{
+width:100%;
+padding:12px;
+font-size:18px;
+border-radius:10px;
+border:none;
+box-sizing:border-box
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px
+}
+
+.stat{
+padding:12px;
+border-radius:12px;
+font-weight:bold
+}
+
+.blue{
+background:#1d4ed8
+}
+
+.green{
+background:#15803d
+}
+
+.red{
+background:#b91c1c
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+color:#fff;
+font-size:18px;
+font-weight:bold
+}
+
+table{
+width:100%;
+font-size:12px
+}
+
+td{
+padding:4px
+}
 </style>
 </head>
+
 <body>
+
 <div class="container">
+
 <h1>💰 Minha Banca Premium</h1>
 
 <div class="card">
@@ -40,7 +108,8 @@ td{padding:4px}
 </div>
 
 <div class="card">
-<button style="background:#16a34a" onclick="green()">GREEN ✅</button><br><br>
+<button style="background:#16a34a" onclick="green()">GREEN ✅</button>
+<br><br>
 <button style="background:#dc2626" onclick="red()">RED ❌</button>
 </div>
 
@@ -48,66 +117,104 @@ td{padding:4px}
 <h3>Histórico</h3>
 <table id="hist"></table>
 </div>
+
 </div>
 
 <script>
+
 let lucro=+localStorage.lucro||0;
 let perda=+localStorage.perda||0;
-let hist=JSON.parse(localStorage.hist||"[]");
+let historico=JSON.parse(localStorage.hist||"[]");
 
-function save(){
+const banca=document.getElementById('banca');
+const aposta=document.getElementById('aposta');
+
+banca.value=localStorage.banca||100;
+aposta.value=localStorage.aposta||0;
+
+function salvar(){
 localStorage.lucro=lucro;
 localStorage.perda=perda;
-localStorage.hist=JSON.stringify(hist);
+localStorage.hist=JSON.stringify(historico);
 localStorage.banca=banca.value;
 localStorage.aposta=aposta.value;
 }
 
-const banca=document.getElementById('banca');
-const aposta=document.getElementById('aposta');
-banca.value=localStorage.banca||100;
-aposta.value=localStorage.aposta||0;
-
 function render(){
+
 let b=+banca.value||0;
 let a=+aposta.value||0;
-disp.innerHTML='💵 Disponível<br>R$ '+(b-a).toFixed(2);
-aberto.innerHTML='🎯 Em Aberto<br>R$ '+a.toFixed(2);
-lucroEl=document.getElementById('lucro');
-perdaEl=document.getElementById('perda');
-lucroEl.innerHTML='🟢 Lucro<br>R$ '+lucro.toFixed(2);
-perdaEl.innerHTML='🔴 Perda<br>R$ '+perda.toFixed(2);
 
-hist.innerHTML=hist.slice().reverse().map(x=>'<tr><td>'+x+'</td></tr>').join('');
-save();
+document.getElementById('disp').innerHTML=
+'💵 Disponível<br>R$ '+(b-a).toFixed(2);
+
+document.getElementById('aberto').innerHTML=
+'🎯 Em Aberto<br>R$ '+a.toFixed(2);
+
+document.getElementById('lucro').innerHTML=
+'🟢 Lucro<br>R$ '+lucro.toFixed(2);
+
+document.getElementById('perda').innerHTML=
+'🔴 Perda<br>R$ '+perda.toFixed(2);
+
+document.getElementById('hist').innerHTML=
+historico.slice().reverse().map(x =>
+'<tr><td>'+x+'</td></tr>'
+).join('');
+
+salvar();
 }
 
 function green(){
+
 let a=+aposta.value||0;
+
 if(a<=0)return;
+
 let retorno=prompt('Retorno recebido?');
+
 if(!retorno)return;
+
 retorno=+retorno;
+
 lucro += Math.max(0,retorno-a);
+
 banca.value=(+banca.value-a+retorno).toFixed(2);
-hist.push('✅ GREEN | Aposta R$'+a+' | Retorno R$'+retorno);
+
+historico.push(
+'✅ GREEN | Aposta R$'+a+' | Retorno R$'+retorno
+);
+
 aposta.value=0;
+
 render();
 }
 
 function red(){
+
 let a=+aposta.value||0;
+
 if(a<=0)return;
+
 perda += a;
+
 banca.value=(+banca.value-a).toFixed(2);
-hist.push('❌ RED | Perda R$'+a);
+
+historico.push(
+'❌ RED | Perda R$'+a
+);
+
 aposta.value=0;
+
 render();
 }
 
 banca.oninput=render;
 aposta.oninput=render;
+
 render();
+
 </script>
+
 </body>
 </html>

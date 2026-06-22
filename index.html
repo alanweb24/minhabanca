@@ -145,7 +145,26 @@ localStorage.hist=JSON.stringify(historico);
 localStorage.banca=banca.value;
 localStorage.aposta=aposta.value;
 }
+    
+function limparTudo(){
 
+if(!confirm('Tem certeza que deseja limpar sua banca?')){
+return;
+}
+
+lucro = 0;
+perda = 0;
+historico = [];
+
+banca.value = 0;
+aposta.value = 0;
+
+localStorage.clear();
+
+render();
+
+}
+    
 function render(){
 let b=+banca.value||0;
 let a=+aposta.value||0;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Minha Banca Premium</title>
+<title>Alan Banca</title>
 
 <style>
 body{
@@ -110,7 +110,13 @@ padding:4px
 <div class="card">
 <button style="background:#16a34a" onclick="green()">GREEN ✅</button>
 <br><br>
+
 <button style="background:#dc2626" onclick="red()">RED ❌</button>
+<br><br>
+
+<button style="background:#eab308;color:#000;" onclick="limparTudo()">
+🗑️ LIMPAR BANCA
+</button>
 </div>
 
 <div class="card">
@@ -212,6 +218,28 @@ aposta.value=0;
 render();
 }
 
+function limparTudo(){
+
+if(!confirm('Tem certeza que deseja limpar sua banca?')){
+    return;
+}
+
+lucro = 0;
+perda = 0;
+historico = [];
+
+banca.value = 100;
+aposta.value = 0;
+
+localStorage.removeItem('lucro');
+localStorage.removeItem('perda');
+localStorage.removeItem('hist');
+localStorage.removeItem('banca');
+localStorage.removeItem('aposta');
+
+render();
+}
+    
 banca.oninput=render;
 aposta.oninput=render;
 

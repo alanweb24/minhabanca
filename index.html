@@ -141,28 +141,31 @@ localStorage.aposta=aposta.value;
 }
 
 function render(){
-
 let b=+banca.value||0;
 let a=+aposta.value||0;
 
-document.getElementById('disp').innerHTML=
-'💵 Disponível<br>R$ '+(b-a).toFixed(2);
+disp.innerHTML='💵 Disponível<br>R$ '+(b-a).toFixed(2);
+aberto.innerHTML='🎯 Em Aberto<br>R$ '+a.toFixed(2);
 
-document.getElementById('aberto').innerHTML=
-'🎯 Em Aberto<br>R$ '+a.toFixed(2);
+let lucroEl=document.getElementById('lucro');
+let perdaEl=document.getElementById('perda');
 
-document.getElementById('lucro').innerHTML=
-'🟢 Lucro<br>R$ '+lucro.toFixed(2);
+let lucroLiquido = lucro - perda;
 
-document.getElementById('perda').innerHTML=
-'🔴 Perda<br>R$ '+perda.toFixed(2);
+if(lucroLiquido >= 0){
+    lucroEl.className='stat green';
+    lucroEl.innerHTML='🟢 Lucro<br>R$ '+lucroLiquido.toFixed(2);
+}else{
+    lucroEl.className='stat red';
+    lucroEl.innerHTML='🔴 Lucro<br>R$ '+lucroLiquido.toFixed(2);
+}
 
-document.getElementById('hist').innerHTML=
-historico.slice().reverse().map(x =>
-'<tr><td>'+x+'</td></tr>'
-).join('');
+perdaEl.className='stat red';
+perdaEl.innerHTML='🔴 Perda<br>R$ '+perda.toFixed(2);
 
-salvar();
+hist.innerHTML=hist.slice().reverse().map(x=>'<tr><td>'+x+'</td></tr>').join('');
+
+save();
 }
 
 function green(){

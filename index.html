@@ -146,24 +146,7 @@ localStorage.banca=banca.value;
 localStorage.aposta=aposta.value;
 }
     
-function limparTudo(){
 
-if(!confirm('Tem certeza que deseja limpar sua banca?')){
-return;
-}
-
-lucro = 0;
-perda = 0;
-historico = [];
-
-banca.value = 0;
-aposta.value = 0;
-
-localStorage.clear();
-
-render();
-
-}
     
 function render(){
 let b=+banca.value||0;
@@ -188,9 +171,9 @@ if(lucroLiquido >= 0){
 perdaEl.className='stat red';
 perdaEl.innerHTML='🔴 Perda<br>R$ '+perda.toFixed(2);
 
-hist.innerHTML=hist.slice().reverse().map(x=>'<tr><td>'+x+'</td></tr>').join('');
+hist.innerHTML=historico.slice().reverse().map(x=>'<tr><td>'+x+'</td></tr>').join('');
 
-save();
+salvar();
 }
 
 function green(){
@@ -247,7 +230,7 @@ lucro = 0;
 perda = 0;
 historico = [];
 
-banca.value = 100;
+banca.value = 0;
 aposta.value = 0;
 
 localStorage.removeItem('lucro');
